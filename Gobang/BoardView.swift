@@ -8,11 +8,7 @@
 
 import UIKit
 
-enum ChessType: Int {
-    case Empty = 0
-    case Black = 1
-    case White = -1
-}
+
 
 let BoardWidth = UIScreen.mainScreen().bounds.width
 let BoardHeight = UIScreen.mainScreen().bounds.height
@@ -25,8 +21,12 @@ let BlackStoneImage = UIImage(named: "stone_black.png")!
 let WhiteStoneImage = UIImage(named: "stone_white.png")!
 
 class BoardView: UIView {
+    
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,7 +34,7 @@ class BoardView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
-        BoardImage.drawInRect(self.frame)
+        BoardImage.drawInRect(CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
     }
     
     func addStone(column column: Int, row: Int, type: ChessType) {
@@ -50,8 +50,18 @@ class BoardView: UIView {
     }
     
     func centerPoint(column column: Int, row: Int) -> CGPoint {
-        return CGPointMake(BorderWidth + LineWidth * CGFloat(column), BorderWidth + LineWidth * CGFloat(row))
+        return CGPointMake(BorderWidth + LineWidth * CGFloat(column - 1), BorderWidth + LineWidth * CGFloat(row - 1))
     }
+    
+    func initBoard() {
+        for subview in subviews {
+            if let chessView = subview as? UIImageView {
+                chessView.removeFromSuperview()
+            }
+        }
+    }
+    
+    
     
     
 }

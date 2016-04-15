@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3221ACF91CC0A8CC0066A42E /* BoardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3221ACF81CC0A8CC0066A42E /* BoardData.swift */; };
 		DCD4CB981CC03F0800A0D65B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD4CB971CC03F0800A0D65B /* AppDelegate.swift */; };
 		DCD4CB9A1CC03F0800A0D65B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD4CB991CC03F0800A0D65B /* ViewController.swift */; };
 		DCD4CB9D1CC03F0800A0D65B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCD4CB9B1CC03F0800A0D65B /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3221ACF81CC0A8CC0066A42E /* BoardData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardData.swift; sourceTree = "<group>"; };
 		DCD4CB941CC03F0800A0D65B /* Gobang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gobang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCD4CB971CC03F0800A0D65B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCD4CB991CC03F0800A0D65B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				DCD4CBA01CC03F0800A0D65B /* LaunchScreen.storyboard */,
 				DCD4CBA31CC03F0800A0D65B /* Info.plist */,
 				DCD4CBCE1CC03FC400A0D65B /* BoardView.swift */,
+				3221ACF81CC0A8CC0066A42E /* BoardData.swift */,
 			);
 			path = Gobang;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3221ACF91CC0A8CC0066A42E /* BoardData.swift in Sources */,
 				DCD4CBCF1CC03FC400A0D65B /* BoardView.swift in Sources */,
 				DCD4CB9A1CC03F0800A0D65B /* ViewController.swift in Sources */,
 				DCD4CB981CC03F0800A0D65B /* AppDelegate.swift in Sources */,
@@ -513,6 +517,7 @@
 				DCD4CBBE1CC03F0800A0D65B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DCD4CBBF1CC03F0800A0D65B /* Build configuration list for PBXNativeTarget "GobangTests" */ = {
 			isa = XCConfigurationList;
@@ -521,6 +526,7 @@
 				DCD4CBC11CC03F0800A0D65B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DCD4CBC21CC03F0800A0D65B /* Build configuration list for PBXNativeTarget "GobangUITests" */ = {
 			isa = XCConfigurationList;
@@ -529,6 +535,7 @@
 				DCD4CBC41CC03F0800A0D65B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
