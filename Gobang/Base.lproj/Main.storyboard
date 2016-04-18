@@ -24,9 +24,18 @@
                                     <action selector="printBoard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="od4-DV-R5Q"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qSb-fK-fEG">
+                                <rect key="frame" x="281" y="512" width="38" height="30"/>
+                                <state key="normal" title="Undo"/>
+                                <connections>
+                                    <action selector="Undo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hlR-Op-Ol3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="qSb-fK-fEG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8kH-sf-Yfp"/>
+                            <constraint firstItem="woQ-EE-qwP" firstAttribute="top" secondItem="qSb-fK-fEG" secondAttribute="bottom" constant="8" id="O2J-zu-h2W"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="woQ-EE-qwP" secondAttribute="bottom" constant="20" id="PEt-zS-WzM"/>
                             <constraint firstItem="woQ-EE-qwP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Tpp-hH-95c"/>
                         </constraints>

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3221ACF91CC0A8CC0066A42E /* BoardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3221ACF81CC0A8CC0066A42E /* BoardData.swift */; };
+		3221ACFB1CC12A5A0066A42E /* BoardArray2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3221ACFA1CC12A5A0066A42E /* BoardArray2D.swift */; };
+		3221ACFD1CC13BB40066A42E /* AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3221ACFC1CC13BB40066A42E /* AI.swift */; };
+		3221ACFF1CC146450066A42E /* ChessModelTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3221ACFE1CC146450066A42E /* ChessModelTemplate.swift */; };
 		DCD4CB981CC03F0800A0D65B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD4CB971CC03F0800A0D65B /* AppDelegate.swift */; };
 		DCD4CB9A1CC03F0800A0D65B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD4CB991CC03F0800A0D65B /* ViewController.swift */; };
 		DCD4CB9D1CC03F0800A0D65B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCD4CB9B1CC03F0800A0D65B /* Main.storyboard */; };
@@ -41,6 +44,9 @@
 
 /* Begin PBXFileReference section */
 		3221ACF81CC0A8CC0066A42E /* BoardData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardData.swift; sourceTree = "<group>"; };
+		3221ACFA1CC12A5A0066A42E /* BoardArray2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardArray2D.swift; sourceTree = "<group>"; };
+		3221ACFC1CC13BB40066A42E /* AI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI.swift; sourceTree = "<group>"; };
+		3221ACFE1CC146450066A42E /* ChessModelTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChessModelTemplate.swift; sourceTree = "<group>"; };
 		DCD4CB941CC03F0800A0D65B /* Gobang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gobang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCD4CB971CC03F0800A0D65B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCD4CB991CC03F0800A0D65B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -112,12 +118,15 @@
 				DCD4CBC51CC03F4100A0D65B /* resource */,
 				DCD4CB971CC03F0800A0D65B /* AppDelegate.swift */,
 				DCD4CB991CC03F0800A0D65B /* ViewController.swift */,
+				3221ACFA1CC12A5A0066A42E /* BoardArray2D.swift */,
+				DCD4CBCE1CC03FC400A0D65B /* BoardView.swift */,
+				3221ACF81CC0A8CC0066A42E /* BoardData.swift */,
+				3221ACFE1CC146450066A42E /* ChessModelTemplate.swift */,
+				3221ACFC1CC13BB40066A42E /* AI.swift */,
 				DCD4CB9B1CC03F0800A0D65B /* Main.storyboard */,
 				DCD4CB9E1CC03F0800A0D65B /* Assets.xcassets */,
 				DCD4CBA01CC03F0800A0D65B /* LaunchScreen.storyboard */,
 				DCD4CBA31CC03F0800A0D65B /* Info.plist */,
-				DCD4CBCE1CC03FC400A0D65B /* BoardView.swift */,
-				3221ACF81CC0A8CC0066A42E /* BoardData.swift */,
 			);
 			path = Gobang;
 			sourceTree = "<group>";
@@ -292,7 +301,10 @@
 				3221ACF91CC0A8CC0066A42E /* BoardData.swift in Sources */,
 				DCD4CBCF1CC03FC400A0D65B /* BoardView.swift in Sources */,
 				DCD4CB9A1CC03F0800A0D65B /* ViewController.swift in Sources */,
+				3221ACFF1CC146450066A42E /* ChessModelTemplate.swift in Sources */,
 				DCD4CB981CC03F0800A0D65B /* AppDelegate.swift in Sources */,
+				3221ACFB1CC12A5A0066A42E /* BoardArray2D.swift in Sources */,
+				3221ACFD1CC13BB40066A42E /* AI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

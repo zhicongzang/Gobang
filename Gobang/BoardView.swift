@@ -22,7 +22,7 @@ let WhiteStoneImage = UIImage(named: "stone_white.png")!
 
 class BoardView: UIView {
     
-    
+    var chessViews: [ChessPosition: UIImageView] = [:]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,14 +39,15 @@ class BoardView: UIView {
     
     func addStone(column column: Int, row: Int, type: ChessType) {
         let point = centerPoint(column: column, row: row)
-        let stone = UIImageView(frame: CGRect(x: 0, y: 0, width: ChessSize, height: ChessSize))
-        stone.center = point
+        let stoneView = UIImageView(frame: CGRect(x: 0, y: 0, width: ChessSize, height: ChessSize))
+        stoneView.center = point
         if type == .Black {
-            stone.image = BlackStoneImage
+            stoneView.image = BlackStoneImage
         } else if type == .White {
-            stone.image = WhiteStoneImage
+            stoneView.image = WhiteStoneImage
         }
-        self.addSubview(stone)
+        chessViews[ChessPosition(column: column, row: row)] = stoneView
+        self.addSubview(stoneView)
     }
     
     func centerPoint(column column: Int, row: Int) -> CGPoint {
@@ -58,6 +59,13 @@ class BoardView: UIView {
             if let chessView = subview as? UIImageView {
                 chessView.removeFromSuperview()
             }
+        }
+        chessViews.removeAll()
+    }
+    
+    func removeStone(chessPosition: ChessPosition) {
+        if let chessView = chessViews.removeValueForKey(chessPosition) {
+            chessView.removeFromSuperview()
         }
     }
     

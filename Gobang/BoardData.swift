@@ -20,32 +20,47 @@ let BlackWin = "BBBBB"
 
 protocol BoardDataDelegate {
     func winTheGame()
+    func aiGetBestResult(ai ai: AI, boardArray: BoardArray2D)
 }
 
 class BoardData {
     let columns: Int
     let rows: Int
-    let delegate: BoardDataDelegate
+    var delegate: BoardDataDelegate?
     
-    var array: Array<Character>
-    var chess = ChessType.Black
+    var boardArray: BoardArray2D
+    var recordArray: [(ChessPosition, ChessType)] = []
     
-    init(columns: Int, rows: Int, delegate: BoardDataDelegate) {
+    var ai: AI?
+    
+    var chess = ChessType.Black {
+        didSet {
+            if let aiChess = self.ai?.chess {
+                if chess != oldValue && aiChess == chess {
+                    delegate?.aiGetBestResult(ai: ai!, boardArray: boardArray)
+                }
+
+            }
+        }
+    }
+    
+    init(columns: Int, rows: Int) {
         self.columns = columns
         self.rows = rows
-        self.delegate = delegate
-        array = Array<Character>.init(count: columns * rows, repeatedValue: "L")
+        boardArray = BoardArray2D(columns: columns, rows: rows)
+        ai = AI(chess: .White)
         initBoard()
     }
     
     subscript(column: Int, row: Int) -> Character {
         get {
-            return array[columns * row + column]
+            return boardArray[column, row]
         }
         set {
-            array[columns * row + column] = newValue
+            boardArray[column, row] = newValue
+            recordArray.append((ChessPosition(column: column, row: row), chess))
             if isWin(column: column, row: row) {
-                delegate.winTheGame()
+                delegate!.winTheGame()
             } else {
                 if chess == .Black {
                     chess = .White
@@ -60,21 +75,23 @@ class BoardData {
         for c in 0...16 {
             for r in 0...16 {
                 if c == 0 || r == 0 || c == 16 || r == 16 {
-                    array[columns * r + c] = "L"
+                    boardArray[c, r] = "L"
                 } else {
-                    array[columns * r + c] = "E"
+                    boardArray[c, r] = "E"
                 }
             }
         }
         chess = .Black
+        recordArray = []
     }
     
     func isLegal(column column: Int, row: Int) -> Bool {
-        if array[columns * row + column] == "E" {
+        if boardArray[column, row] == "E" {
             return true
         }
         return false
     }
+    
     
     func isWin(column column: Int, row: Int) -> Bool {
         let winResult: String
@@ -83,67 +100,37 @@ class BoardData {
         } else {
             winResult = WhiteWin
         }
-        var result = ""
-        // 判断行
-        for c in 1...15 {
-            result.append(array[columns * row + c])
-        }
-        if result.containsString(winResult) {
-            return true
-        } else {
-            result = ""
-        }
-        // 判断列
-        for r in 1...15 {
-            result.append(array[columns * r + column])
-        }
-        if result.containsString(winResult) {
-            return true
-        } else {
-            result = ""
-        }
-        // 判断左上右下
-        result = String(array[columns * row + column])
-        for i in 1...15 {
-            if row - i > 0 && column - i > 0 {
-                result = String(array[columns * (row - i) + (column - i)]) + result
-            } else {
-                break
+        for value in boardArray.positionValues(column: column, row: row) {
+            if value.containsString(winResult) {
+                return true
             }
-        }
-        for i in 1...15 {
-            if row + i < 16 && column + i < 16 {
-                result = result + String(array[columns * (row + i) + (column + i)])
-            } else {
-                break
-            }
-        }
-        if result.containsString(winResult) {
-            return true
-        } else {
-            result = ""
-        }
-        // 判断左下右上
-        result = String(array[columns * row + column])
-        for i in 1...15 {
-            if row + i < 16 && column - i > 0 {
-                result = String(array[columns * (row + i) + (column - i)]) + result
-            } else {
-                break
-            }
-        }
-        for i in 1...15 {
-            if row - i > 0 && column + i < 16 {
-                result = result + String(array[columns * (row - i) + (column + i)])
-            } else {
-                break
-            }
-        }
-        if result.containsString(winResult) {
-            return true
         }
 
         return false
+    }
+    
+    func undoOnce() -> ChessPosition? {
+        if recordArray.count < 1 {
+            return nil
+        } else {
+            let record = recordArray.removeLast()
+            boardArray[record.0.column, record.0.row] = "E"
+            chess = record.1
+            return record.0
+        }
+    }
+    
+    func printBoardArray() {
+        for r in 0...16 {
+            var str = ""
+            for c in 0...16 {
+                str += (String(boardArray[c,r]) + " ")
+            }
+            print(str)
+        }
+        print("")
+        print("================================")
+        print("")
     }
     
     
@@ -155,3 +142,4 @@ class BoardData {
     
     
 }
+
