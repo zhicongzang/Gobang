@@ -55,10 +55,8 @@ class BoardView: UIView {
     }
     
     func initBoard() {
-        for subview in subviews {
-            if let chessView = subview as? UIImageView {
-                chessView.removeFromSuperview()
-            }
+        chessViews.forEach { (position, view) in
+            view.removeFromSuperview()
         }
         chessViews.removeAll()
     }

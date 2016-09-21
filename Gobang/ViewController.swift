@@ -12,15 +12,17 @@ class ViewController: UIViewController {
 
     let boardView = BoardView(frame: CGRect(x: 0, y: 100, width: UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.width))
     var tapGesture: UITapGestureRecognizer?
-    var boardData = BoardData(columns: 17, rows: 17)
+    var boardDataManager = BoardDataManager(columns: 17, rows: 17)
+    var ai: AI!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        boardData.delegate = self
+        boardDataManager.delegate = self
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(ViewController.addChess(_:)))
         self.view.addGestureRecognizer(tapGesture!)
         self.view.addSubview(boardView)
+        ai = AI(chess: ChessType.White, boardArray: boardDataManager.boardArray)
         
     }
 
@@ -32,12 +34,17 @@ class ViewController: UIViewController {
     func addChess(sender: UITapGestureRecognizer) {
         let point = sender.locationInView(boardView)
         let position = chessPosition(point)
-        if boardData.isLegal(column: position.column, row: position.row) {
-            boardView.addStone(column: position.column, row: position.row, type: boardData.chess)
-            boardData[position.column, position.row] = boardData.chess.rawValue
+        if boardDataManager.isLegal(column: position.column, row: position.row) {
+            boardView.addStone(column: position.column, row: position.row, type: boardDataManager.chess)
+            boardDataManager[position.column, position.row] = boardDataManager.chess.rawValue
             
         }
-        
+        let aiP = ai.getBestResult(deep: 1)
+        if boardDataManager.isLegal(column: aiP.column, row: aiP.row) {
+            boardView.addStone(column: aiP.column, row: aiP.row, type: boardDataManager.chess)
+            boardDataManager[aiP.column, aiP.row] = boardDataManager.chess.rawValue
+            
+        }
     }
     
     func chessPosition(point: CGPoint) -> ChessPosition {
@@ -50,13 +57,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func Undo(sender: UIButton) {
-        if let chessPosition = boardData.undoOnce() {
+        if let chessPosition = boardDataManager.undoOnce() {
             boardView.removeStone(chessPosition)
         }
     }
     
     @IBAction func printBoard(sender: AnyObject) {
-        boardData.printBoardArray()
+        boardDataManager.printBoard()
     }
 
 
@@ -65,29 +72,18 @@ class ViewController: UIViewController {
 extension ViewController: BoardDataDelegate {
     func winTheGame() {
         var message = " is Win!"
-        if boardData.chess == .Black {
+        if boardDataManager.chess == .Black {
             message = "Black" + message
         } else {
             message = "White" + message
         }
         let controller = UIAlertController(title: "Win", message: message, preferredStyle: .Alert)
         let okayAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel){ (action) in
-            self.boardData.initBoard()
+            self.boardDataManager.initBoard()
             self.boardView.initBoard()
         }
         controller.addAction(okayAction)
         self.presentViewController(controller, animated: true, completion: nil)
-    }
-    
-    func aiGetBestResult(ai ai: AI, boardArray: BoardArray2D) {
-        let aiResult = ai.getBestResult(boardArray)
-        print("score: \(aiResult.1)")
-        let position = aiResult.0
-        if boardData.isLegal(column: position.column, row: position.row) {
-            boardView.addStone(column: position.column, row: position.row, type: boardData.chess)
-            boardData[position.column, position.row] = boardData.chess.rawValue
-            
-        }
     }
 }
 

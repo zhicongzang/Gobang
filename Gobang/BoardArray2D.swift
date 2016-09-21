@@ -128,6 +128,40 @@ class BoardArray2D: NSCopying {
         return values
     }
     
+    func printBoard() {
+        for r in 0...16 {
+            var str = ""
+            for c in 0...16 {
+                str += (String(self[c,r]) + " ")
+            }
+            print(str)
+        }
+        print("")
+        print("================================")
+        print("")
+    }
+    
+    
+}
+
+extension BoardArray2D {
+    
+    // 检查坐标周围是否有足够的棋子
+    func checkPositionHasNeighbor(position: ChessPosition, distance: Int, neighborCount: Int) -> Bool {
+        let startColumn = max(position.column - distance, 1)
+        let endColumn = min(position.column + distance, 15)
+        let startRow = max(position.row - distance, 1)
+        let endRow = min(position.row + distance, 15)
+        var count = 0
+        for c in startColumn...endColumn {
+            for r in startRow...endRow {
+                if self[c,r] == ChessType.White.rawValue || self[c,r] == ChessType.Black.rawValue {
+                    count += 1
+                }
+            }
+        }
+        return count >= neighborCount
+    }
     
 }
 

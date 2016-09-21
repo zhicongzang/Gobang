@@ -42,8 +42,8 @@ enum ScoreType: Int {
 // 白棋
 let White_Five = "WWWWW"
 
-let White_Four_live = ["EWWWWWE",
-                       "WEWWWEW"]
+let White_Four_live = ["EWWWWE",
+                       "WEWwWEW"]
 
 let White_Four_rush = ["EWWWW",
                        "WEWWW",

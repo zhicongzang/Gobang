@@ -13,6 +13,17 @@ enum ChessType: Character {
     case Black = "B"
     case White = "W"
     case Line = "L"
+    
+    func oppoType() -> ChessType {
+        switch self {
+        case .Black:
+            return .White
+        case .White:
+            return .Black
+        default:
+            return .Empty
+        }
+    }
 }
 
 let WhiteWin = "WWWWW"
@@ -20,10 +31,9 @@ let BlackWin = "BBBBB"
 
 protocol BoardDataDelegate {
     func winTheGame()
-    func aiGetBestResult(ai ai: AI, boardArray: BoardArray2D)
 }
 
-class BoardData {
+class BoardDataManager {
     let columns: Int
     let rows: Int
     var delegate: BoardDataDelegate?
@@ -31,24 +41,12 @@ class BoardData {
     var boardArray: BoardArray2D
     var recordArray: [(ChessPosition, ChessType)] = []
     
-    var ai: AI?
-    
-    var chess = ChessType.Black {
-        didSet {
-            if let aiChess = self.ai?.chess {
-                if chess != oldValue && aiChess == chess {
-                    delegate?.aiGetBestResult(ai: ai!, boardArray: boardArray)
-                }
-
-            }
-        }
-    }
+    var chess = ChessType.Black
     
     init(columns: Int, rows: Int) {
         self.columns = columns
         self.rows = rows
         boardArray = BoardArray2D(columns: columns, rows: rows)
-        ai = AI(chess: .White)
         initBoard()
     }
     
@@ -120,17 +118,8 @@ class BoardData {
         }
     }
     
-    func printBoardArray() {
-        for r in 0...16 {
-            var str = ""
-            for c in 0...16 {
-                str += (String(boardArray[c,r]) + " ")
-            }
-            print(str)
-        }
-        print("")
-        print("================================")
-        print("")
+    func printBoard() {
+        boardArray.printBoard()
     }
     
     
