@@ -39,7 +39,7 @@ class ViewController: UIViewController {
             boardDataManager[position.column, position.row] = boardDataManager.chess.rawValue
             
         }
-        let aiP = ai.getBestResult(deep: 1)
+        let aiP = ai.getBestResult(deep: 4)
         if boardDataManager.isLegal(column: aiP.column, row: aiP.row) {
             boardView.addStone(column: aiP.column, row: aiP.row, type: boardDataManager.chess)
             boardDataManager[aiP.column, aiP.row] = boardDataManager.chess.rawValue

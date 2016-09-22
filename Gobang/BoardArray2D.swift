@@ -105,6 +105,12 @@ class BoardArray2D: NSCopying {
             rightDiagonalValue(column: column, row: row)]       // 左下右上对角线值
     }
     
+    func pointAllValues(position: ChessPosition) -> [String] {
+        let row = position.row
+        let column = position.column
+        return [rowValue(row: row), columnValue(column: column), leftDiagonalValue(column: column, row: row), rightDiagonalValue(column: column, row: row)]
+    }
+    
     func boardAllValues() -> [String] {
         var values = [String]()
         for c in 1...15 {

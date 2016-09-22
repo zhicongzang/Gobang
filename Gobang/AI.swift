@@ -11,6 +11,8 @@ import Foundation
 class AI {
     let chess: ChessType
     var boardArray: BoardArray2D
+    var total = 0
+    var cut = 0
     
     init(chess: ChessType, boardArray: BoardArray2D) {
         self.chess = chess
@@ -18,9 +20,11 @@ class AI {
     }
     
     func getBestResult(deep deep: Int) -> ChessPosition {
+        total = 0
+        cut = 0
         var bestPositions = [ChessPosition]()
         var bestScore = Int.min
-        let positions = generatorPositions()
+        let positions = genPositions()
         positions.forEach { (position) in
             boardArray[position.column, position.row] = chess.rawValue
             let score = humanMoveScore(deep: deep - 1, alpha: bestScore > Int.min ? bestScore : Int.min, beta: Int.max)
@@ -32,13 +36,17 @@ class AI {
             }
             boardArray[position.column, position.row] = ChessType.Empty.rawValue
         }
+        print("Total: \(total)")
+        print("Cut: \(cut)")
         return bestPositions.first!
     }
     
     // Min
     func humanMoveScore(deep deep: Int, alpha: Int, beta: Int) -> Int {
-        let scores = calculateBoardScores()
-        let score = scores[chess]! - scores[chess.oppoType()]!
+        total += 1
+        //let scores = calculateBoardScores()
+        //let score = scores[chess]! - scores[chess.oppoType()]!
+        let score = test()
         if deep <= 0 || score >= ScoreType.Win.rawValue {
             return score
         }
@@ -52,6 +60,7 @@ class AI {
                 bestScore = score
             }
             if score < beta {
+                cut += 1
                 return
             }
         }
@@ -60,10 +69,20 @@ class AI {
         
     }
     
+    func test() -> Int {
+        var score = Int(arc4random() % 10)
+        for i in 0...80 {
+            score += Int(arc4random() % 10)
+        }
+        return score
+    }
+    
     // Max
     func aiMoveScore(deep deep: Int, alpha: Int, beta: Int) -> Int {
-        let scores = calculateBoardScores()
-        let score = scores[chess]! - scores[chess.oppoType()]!
+        total += 1
+        //let scores = calculateBoardScores()
+        let score = test()
+        //let score = scores[chess]! - scores[chess.oppoType()]!
         if deep <= 0 || score >= ScoreType.Win.rawValue {
             return score
         }
@@ -77,10 +96,62 @@ class AI {
                 bestScore = score
             }
             if score > alpha {
+                cut += 1
                 return
             }
         }
         return bestScore
+    }
+    
+    func calculatePointScore(position position: ChessPosition, chess: ChessType) -> Int {
+        var score = 0
+        switch chess {
+        case .White:
+            let values = boardArray.pointAllValues(position)
+            values.forEach({ (value) in
+                if isExistWhite_Five(value) {
+                    score += ScoreType.Five.rawValue
+                } else if let _ = isExistWhite_Four_live(value) {
+                    score += ScoreType.Four_live.rawValue
+                } else if let _ = isExistWhite_Four_rush(value) {
+                    score += ScoreType.Four_rush.rawValue
+                } else if let _ = isExistWhite_Three_live(value) {
+                    score += ScoreType.Three_live.rawValue
+                } else if let _ = isExistWhite_Three_rush(value) {
+                    score += ScoreType.Three_rush.rawValue
+                } else if let _ = isExistWhite_Two_live(value) {
+                    score += ScoreType.Two_live.rawValue
+                } else if let _ = isExistWhite_Two_rush(value) {
+                    score += ScoreType.Two_rush.rawValue
+                } else if let _ = isExistWhite_One_live(value) {
+                    score += ScoreType.One_live.rawValue
+                }
+            })
+        case .Black:
+            let values = boardArray.pointAllValues(position)
+            values.forEach({ (value) in
+                if isExistBlack_Five(value) {
+                    score += ScoreType.Five.rawValue
+                } else if let _ = isExistBlack_Four_live(value) {
+                    score += ScoreType.Four_live.rawValue
+                } else if let _ = isExistBlack_Four_rush(value) {
+                    score += ScoreType.Four_rush.rawValue
+                } else if let _ = isExistBlack_Three_live(value) {
+                    score += ScoreType.Three_live.rawValue
+                } else if let _ = isExistBlack_Three_rush(value) {
+                    score += ScoreType.Three_rush.rawValue
+                } else if let _ = isExistBlack_Two_live(value) {
+                    score += ScoreType.Two_live.rawValue
+                } else if let _ = isExistBlack_Two_rush(value) {
+                    score += ScoreType.Two_rush.rawValue
+                } else if let _ = isExistBlack_One_live(value) {
+                    score += ScoreType.One_live.rawValue
+                }
+            })
+        default:
+            break
+        }
+        return score
     }
 
     
@@ -154,7 +225,7 @@ class AI {
                     let position = ChessPosition(column: c,row: r)
                     if boardArray.checkPositionHasNeighbor(position, distance: 1, neighborCount: 1) {
                         highLevelPositions.append(position)
-                    } else if boardArray.checkPositionHasNeighbor(position, distance: 2, neighborCount: 1) {
+                    } else if boardArray.checkPositionHasNeighbor(position, distance: 2, neighborCount: 2) {
                         lowLevelPositions.append(position)
                     }
                 }
@@ -162,6 +233,66 @@ class AI {
         }
         return highLevelPositions + lowLevelPositions
     }
+    
+    func genPositions() -> [ChessPosition] {
+        
+        var fiveKills = [ChessPosition]()
+        var fourKills = [ChessPosition]()
+        var threeKills = [ChessPosition]()
+        var threes = [ChessPosition]()
+        var twos = [ChessPosition]()
+        var neighbors = [ChessPosition]()
+        var nextNeighbors = [ChessPosition]()
+        
+        for c in 1...15 {
+            for r in 1...15 {
+                if boardArray[c,r] == ChessType.Empty.rawValue {
+                    let position = ChessPosition(column: c,row: r)
+                    if boardArray.checkPositionHasNeighbor(position, distance: 1, neighborCount: 1) {
+                        let aiScore = calculatePointScore(position: position, chess: chess)
+                        let humanScore = calculatePointScore(position: position, chess: chess.oppoType())
+                        if aiScore >= ScoreType.Five.rawValue {
+                            return [position]
+                        } else if humanScore >= ScoreType.Five.rawValue {
+                            fiveKills.append(position)
+                        } else if aiScore >= ScoreType.Four_live.rawValue {
+                            fourKills.insert(position, atIndex: 0)
+                        } else if humanScore >= ScoreType.Four_live.rawValue {
+                            fourKills.append(position)
+                        } else if aiScore >= 2 * ScoreType.Three_live.rawValue {
+                            threeKills.insert(position, atIndex: 0)
+                        } else if humanScore >= 2 * ScoreType.Three_live.rawValue {
+                            threeKills.append(position)
+                        } else if aiScore >= ScoreType.Three_live.rawValue {
+                            threes.insert(position, atIndex: 0)
+                        } else if humanScore >= ScoreType.Three_live.rawValue {
+                            threes.append(position)
+                        } else if aiScore >= ScoreType.Two_live.rawValue {
+                            twos.insert(position, atIndex: 0)
+                        } else if humanScore >= ScoreType.Two_live.rawValue {
+                            twos.append(position)
+                        } else {
+                            neighbors.append(position)
+                        }
+                    } else if boardArray.checkPositionHasNeighbor(position, distance: 2, neighborCount: 2) {
+                        nextNeighbors.append(position)
+                    }
+                }
+            }
+        }
+        
+        if fiveKills.count > 0 {
+            return [fiveKills.first!]
+        }
+        if fourKills.count > 0 {
+            return fourKills
+        }
+        if threeKills.count > 0 {
+            return threeKills
+        }
+        return threes + twos + neighbors + nextNeighbors
+    }
+    
     
     
     

@@ -32,7 +32,7 @@ enum ScoreType: Int {
     case Three_live = 500
     case Three_rush = 100
     case Two_live = 50
-    case Two_rush = 20
+    case Two_rush = 15
     case One_live = 1
     case Defult = 0
     case Win = 100000000
